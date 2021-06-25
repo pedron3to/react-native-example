@@ -4,11 +4,11 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-nativ
 
 
 export function Home() {
-  const [input, setInput] = useState('');
-  const [mySkills, setMySkills] = useState<never[[]]>([]);
+  const [newSkill, setNewSkill] = useState('');
+  const [mySkills, setMySkills] = useState<Array<string>>([]);
 
   function handleAddNewSkill() {
-    setMySkills(prevState => [...prevState, teste]);
+    setMySkills(prevState => [...prevState, newSkill]);
   }
 
 
@@ -18,9 +18,9 @@ export function Home() {
       <Text style={styles.title}>Welcome to React Native</Text>
       <TextInput
         style={styles.input}
-        placeholder="Input"
+        placeholder="Skylls"
         placeholderTextColor="#ccc"
-        onChangeText={setInput}
+        onChangeText={setNewSkill}
       />
 
       <TouchableOpacity
@@ -29,19 +29,26 @@ export function Home() {
         onPress={handleAddNewSkill}
       >
         <Text style={styles.buttonText}>
-          TouchableOpacity/activeOpacity=0.61
+          Add
         </Text>
       </TouchableOpacity>
 
-      <Text style={[styles.title, { marginTop: 50 }]}>
-        Added additional Styles.
+      <Text style={[styles.title, { marginVertical: 50 }]}>
+        My Skylls
       </Text>
 
-      <TouchableOpacity style={styles.buttonSkill}>
-        <Text style={styles.skill}>
-          Button
-        </Text>
-      </TouchableOpacity>
+      {
+        mySkills.map(skill => (
+          <TouchableOpacity
+            key={skill}
+            style={[styles.buttonSkill, { marginVertical: 10 }]}
+          >
+            <Text style={[styles.skill]}>
+              {newSkill}
+            </Text>
+          </TouchableOpacity>
+        ))
+      }
 
       <StatusBar style="auto" />
     </View>
@@ -90,6 +97,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#1f1f25',
     padding: 20,
     borderRadius: 5,
+    alignItems: 'center'
 
   }
 
