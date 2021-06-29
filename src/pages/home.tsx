@@ -1,54 +1,77 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TextInput, FlatList } from 'react-native';
+import { Button } from '../components/Button'
+import { SkillCard } from '../components/SkillCard'
 
+interface SkillData {
+  id: string;
+  name: string;
+}
 
 export function Home() {
   const [newSkill, setNewSkill] = useState('');
-  const [mySkills, setMySkills] = useState<Array<string>>([]);
+  const [mySkills, setMySkills] = useState<SkillData[]>([]);
+  const [greeting, setGreeting] = useState('');
 
   function handleAddNewSkill() {
-    setMySkills(prevState => [...prevState, newSkill]);
+    const data = {
+      id: String(new Date().getTime()),
+      name: newSkill
+    }
+
+    setMySkills(prevState => [...prevState, data]);
   }
 
+  function handleRemoveSkill(id: string) {
+    setMySkills(prevState => prevState.filter(
+      skill => skill.id !== id
+    ))
 
+  }
 
+  useEffect(() => {
+    const currentHour = new Date().getHours();
+    if (currentHour < 12) {
+      setGreeting('Good Morning')
+    } else if (currentHour >= 12 && currentHour < 18) {
+      setGreeting('Good afternoon')
+    } else {
+      setGreeting('Good night')
+    }
+  }, [])
   return (
     <View style={styles.container}>
+      <StatusBar />
       <Text style={styles.title}>Welcome to React Native</Text>
+
+      <Text style={styles.greeting}>
+        {greeting}
+      </Text>
+
       <TextInput
         style={styles.input}
         placeholder="Skylls"
         placeholderTextColor="#ccc"
-        onChangeText={setNewSkill}
+        onChangeText={setNewSkill} //observing each caracter
       />
 
-      <TouchableOpacity
-        style={styles.button}
-        activeOpacity={0.61}
-        onPress={handleAddNewSkill}
-      >
-        <Text style={styles.buttonText}>
-          Add
-        </Text>
-      </TouchableOpacity>
+      <Button onPress={handleAddNewSkill} title={'add'} />
 
       <Text style={[styles.title, { marginVertical: 50 }]}>
         My Skylls
       </Text>
 
-      {
-        mySkills.map(skill => (
-          <TouchableOpacity
-            key={skill}
-            style={[styles.buttonSkill, { marginVertical: 10 }]}
-          >
-            <Text style={[styles.skill]}>
-              {newSkill}
-            </Text>
-          </TouchableOpacity>
-        ))
-      }
+      <FlatList
+        data={mySkills}
+        keyExtractor={item => item.id}
+        renderItem={({ item }) => (
+          <SkillCard
+            skill={item.name}
+            onPress={() => handleRemoveSkill(item.id)}
+          />
+        )}
+      />
 
       <StatusBar style="auto" />
     </View>
@@ -61,8 +84,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#121015',
     paddingHorizontal: 20,
     paddingVertical: 70,
+  }, 
 
-  },
   title: {
     color: "#fff",
     fontSize: 24,
@@ -76,29 +99,8 @@ const styles = StyleSheet.create({
     marginTop: 30,
     borderRadius: 7,
   },
-  button: {
-    backgroundColor: "orange",
-    padding: 15,
-    borderRadius: 7,
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 17,
-    fontWeight: 'bold'
-  },
-  skill: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: 'bold'
-  },
-  buttonSkill: {
-    backgroundColor: '#1f1f25',
-    padding: 20,
-    borderRadius: 5,
-    alignItems: 'center'
 
+  greeting: {
+    color: "#fff",
   }
-
 });
