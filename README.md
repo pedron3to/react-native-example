@@ -27,20 +27,20 @@ This project was made using the follow technologies:
 
 ```bash
 # Clone Repository
-$ git clone https://github.com/pedron3to/framer-motion-examples.git
+$ git clone https://github.com/pedron3to/react-native-example.git
 ```
 
 ```bash
-$ cd framer-motion-examples
+$ cd react-native-example
 # Install Dependencies
 $ yarn 
 ```
 
 ```bash
-$ yarn dev
+$ yarn start
 ```
 
-Go to http://localhost:3000 to see the result.
+Go to http://localhost:19006 to see the result.
 # :sparkles: Contributing
 
 - Fork this repository;
