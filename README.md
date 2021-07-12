@@ -37,7 +37,7 @@ $ yarn
 ```
 
 ```bash
-$ yarn start
+$ yarn web
 ```
 
 Go to http://localhost:19006 to see the result.
